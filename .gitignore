@@ -1,0 +1,12 @@
+*.pyc 
+__pycache__ 
+__pycache__/
+*.py[cod]
+.env
+env/
+*.bat
+
+# SQLite database files
+
+*.sqlite3
+

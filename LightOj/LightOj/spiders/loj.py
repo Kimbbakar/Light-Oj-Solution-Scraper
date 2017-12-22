@@ -74,7 +74,7 @@ class LojSpider(scrapy.Spider):
             f = open('LightOj_Solutions/' + file_name,'w' );
             f.write(code)
             f.close()
-       else:
+        else:
             print '--------------------------- Code ID: ' + str(pid) + '-------------------------\n'  + code
 
 

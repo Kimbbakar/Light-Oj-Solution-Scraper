@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
 import scrapy
 from bs4 import BeautifulSoup
 import html5lib
+import os
 
 class LojSpider(scrapy.Spider):
     name = 'loj'
@@ -49,15 +49,38 @@ class LojSpider(scrapy.Spider):
         
 
         trs = response.css('#mytable3 tr')  
-        for tr in trs[1:]: 
+
+        for idx, tr in enumerate(reversed(trs[1:])): 
             verdict = tr.css('div::text').extract_first().strip()   
             link = tr.css('a')[0] 
-            print (link) 
+ 
             if verdict == 'Accepted': 
-                print (verdict,link)
-                yield response.follow(link, callback=self.parse_submission )
-                break
+                yield response.follow(link, callback=self.parse_submission ) 
+                
     def parse_submission(self,response):
         soup = BeautifulSoup(response.text,'html5lib' )
+ 
+        code = soup.find('textarea').text
+         
+        tr = soup.find('table', id='mytable3').find_all('tr')[1]
+        tds = tr.find_all('td')
+        subid = tr.find('th').text.strip()
+        name = tds[2].text.strip()
+        pid = name.split('-')[0].strip()
+ 
+        file_name = 'LightOj -'+str(pid)+'.cpp' 
+ 
+        if os.path.isfile('LightOj_Solutions/' + file_name )==True:
+            f = open('LightOj_Solutions/' + file_name,'w' );
+            f.write(code)
+            f.close()
+       else:
+            print '--------------------------- Code ID: ' + str(pid) + '-------------------------\n'  + code
 
-        print soup.find('textarea').text
+
+            ok = raw_input('This proble\'s code already exist. Want to overwrite? Y/N: ')
+
+            if ok == 'Y':
+                f = open('LightOj_Solutions/' + file_name,'w' );
+                f.write(code)
+                f.close()        

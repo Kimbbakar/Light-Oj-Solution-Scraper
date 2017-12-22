@@ -70,7 +70,7 @@ class LojSpider(scrapy.Spider):
  
         file_name = 'LightOj -'+str(pid)+'.cpp' 
  
-        if os.path.isfile('LightOj_Solutions/' + file_name )==True:
+        if os.path.isfile('LightOj_Solutions/' + file_name )==False:
             f = open('LightOj_Solutions/' + file_name,'w' );
             f.write(code)
             f.close()

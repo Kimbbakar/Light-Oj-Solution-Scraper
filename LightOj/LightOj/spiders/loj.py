@@ -8,12 +8,18 @@ class LojSpider(scrapy.Spider):
     allowed_domains = ['lightoj.com']
     start_urls = ['http://lightoj.com/login_main.php']
     submission_url = 'http://lightoj.com/volume_usersubmissions.php'
+    f = open ('E:\Project\Light Oj Solution Scraper\LightOj\done_solution.txt','r') 
+
+    file_list = list()
+
+    for i in f:
+        file_list.append(i.strip() )
 
     def parse(self, response):
 
         self.username = raw_input("Username/Email : ")
-        self.userpass = raw_input("Password: ")
- 
+        self.userpass = raw_input("Password: ")    
+
 
         return scrapy.FormRequest.from_response(
             response,
@@ -26,6 +32,8 @@ class LojSpider(scrapy.Spider):
         )
 
     def after_login(self,response):
+        
+
         
         if 'login_main.php' in response.text:
             print "Login failed!!!"
@@ -67,10 +75,20 @@ class LojSpider(scrapy.Spider):
         subid = tr.find('th').text.strip()
         name = tds[2].text.strip()
         pid = name.split('-')[0].strip()
+
+        file_name = 'LightOj '+str(pid)+'.cpp' 
+
+
+        if pid in self.file_list:
+            return
+        else:
+            print file_name
  
-        file_name = 'LightOj -'+str(pid)+'.cpp' 
  
         if os.path.isfile('LightOj_Solutions/' + file_name )==False:
+            w = open ('E:\Project\Light Oj Solution Scraper\LightOj\done_solution.txt','a') 
+            w.write(pid + '\n')
+            w.close()
             f = open('LightOj_Solutions/' + file_name,'w' );
             f.write(code)
             f.close()

@@ -21,5 +21,8 @@ scrapy crawl loj
 
 It will ask your LightOj ID/Email and Password. After that, it will create a LightOj-Solutions folder inside the project.
 
+## Warning
+If you want to download all your solution again, don't forget to clean ```done_solution.txt``` file.
+
 ## Acknowledgments
 All credit goes to this [blog](https://sjsakib.github.io/2017/scraping-lightoj-part-i/). It helps me to write this and download my own [lightoj solution](https://github.com/Kimbbakar/LightOj-Solutions)
